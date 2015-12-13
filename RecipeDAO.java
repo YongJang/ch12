@@ -51,6 +51,38 @@ public class RecipeDAO {
 		}
 	}
 	
+	public RecipeDTO upRate(int num) throws SQLException{
+		String tempNum = Integer.toString(num);
+		String sql = "select * from recipe where num=?";
+		try{
+			connect();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, tempNum);
+			rs = ps.executeQuery();
+			Vector<RecipeDTO> list = makeList(rs);
+			RecipeDTO regBean = list.get(0);
+			int number = regBean.getRate();
+			number = number + 1;
+			
+			int l;
+			sql = "update recipe set rate=? where num=?";
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, number);
+			ps.setString(2, tempNum);
+			l = ps.executeUpdate();
+			
+			sql = "select * from recipe where num=?";
+			ps = con.prepareStatement(sql);
+			ps.setString(1, tempNum);
+			rs = ps.executeQuery();
+			list = makeList(rs);
+			regBean = list.get(0);
+			return regBean;
+		}finally{
+			close();
+		}
+	}
+	
 	public Vector<RecipeDTO> getRecipeList() throws SQLException{
 		String sql = "select * from recipe";
 		try{
