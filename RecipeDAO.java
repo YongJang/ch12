@@ -64,6 +64,27 @@ public class RecipeDAO {
 		}
 	}
 	
+	public Vector<RecipeDTO> getRecipeListbySearch(String keyword, String str) throws SQLException{
+		String key;
+		if(keyword.equals("name")){
+			key = "cookname";
+		}else if(keyword.equals("ingredient")){
+			key = "ingredient";
+		}else{
+			key = "recipe";
+		}
+		String sql = "select * from recipe where "+key+" like '"+"%"+str+"%'";
+		try{
+			connect();
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			Vector<RecipeDTO> list = makeList(rs);
+			return list;
+		}finally{
+			close();
+		}
+	}
+	
 	public Vector<RecipeDTO> makeList(ResultSet rs) throws SQLException{
 		// ResultSet -> Vector<RecipeDTO> º¯È¯
 		Vector<RecipeDTO> list = new Vector<RecipeDTO>();
