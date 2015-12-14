@@ -49,6 +49,7 @@ public class LikeDAO {
 			//LikeDTO regBean = list.get(0);
 			if(list.size()!=0){
 				sql = "delete from Like where num=? and id='?'";
+				ps = con.prepareStatement(sql);
 				ps.setString(1, tempNum);
 				ps.setString(2, id);
 				int delete = 0;
